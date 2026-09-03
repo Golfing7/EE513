@@ -9,6 +9,8 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
+\usepackage{amstext}
+\usepackage{amsopn}
 
 % ---------- Header / Footer ----------
 \pagestyle{fancy}
@@ -531,6 +533,29 @@
             F_X(x) = \frac{1}{2} + \frac{-e^{-x}}{2} + \frac{1}{2} = 1 - e^{-x}\frac{1}{2}
         \]
 
+        Now for the case of $x \le 0$, we know that $|x|$ for $x \le 0$ is $-x$
+        \[
+            F_X(x) = \int_{-\infty}^{x} f_X(t) = \int_{-\infty}^{x} \frac{1}{2} e^{t} dt
+        \]
+        Integrating this:
+        \begin{align}
+            \int_{-\infty}^{x} \frac{1}{2} e^{t} dt &= \frac{1}{2}\left[e^{t}\right]_{-\infty}^{x} \\
+            &= \frac{1}{2} (e^{x}) \\
+            &= e^{x}\frac{1}{2}
+        \end{align}
+        Now we have obtained
+        \[
+            F_X(x) =
+            \begin{cases}
+                \dfrac{1}{2}e^x & x < 0 \\
+                1 - \dfrac{1}{2}e^{-x} & x \geq 0
+            \end{cases}
+        \]
+        Let's do a check for $\lim_{x \to \infty} F_X(x)$ to ensure it's equal to $1$.
+        \[
+            \lim_{x \to \infty} F_X(x) = 1 - \frac{1}{2}e^{-x} = 1
+        \]
+        \qed
 
     \end{solution}
 
@@ -541,6 +566,33 @@
 
     \begin{solution}
 
+        Again, we must first demonstrate the relationship between $a$ and $b$.
+        Let's integrate the function from $-\infty \to \infty$.
+        \begin{align}
+            \int_{-\infty}^{\infty} f_X(x) dx &= a \int_{-\infty}^{\infty} \frac{1}{b^2 + x^2}dx \qquad \text{$a$ is a constant} \\
+            &= 2a \int_{0}^{\infty} \frac{1}{b^2 + x^2} dx \qquad \text{integral is even across x axis} \\
+            &= 2a \left[\frac{1}{b}\arctan(\frac{x}{b})\right]_{0}^{\infty} \qquad \text{common arctan integral} \\
+            &= 2a (\frac{\pi}{2b}) \\
+            &= \frac{a\pi}{b} = 1
+        \end{align}
+        To find the relation,
+        \begin{align}
+            b = a\pi
+        \end{align}
+
+        Now specifically at $a = \frac{1}{2}$, $b = \frac{\pi}{2}$, we need to find the cdf.
+        \begin{align}
+            F_X(x) = \int_{-\infty}^{x} f_X(t) dt &= \frac{1}{2} \int_{-\infty}^{x} \frac{1}{\frac{\pi^2}{4} + t^2} dt \\
+            &= \frac{1}{2} \left[\frac{2}{\pi}\arctan(\frac{2t}{\pi})\right]_{-\infty}^{x} \\
+            &= \frac{1}{2} \cdot \left(\frac{2}{\pi}\arctan(\frac{2x}{\pi}) + \frac{2}{\pi}\cdot\frac{\pi}{2}\right) \\
+            &= \frac{1}{\pi} \arctan(\frac{2x}{\pi}) + \frac{1}{2}
+        \end{align}
+
+        As a sanity check, let's evaluate as $x \to \infty$
+        \[
+            \lim_{x \to \infty} \frac{1}{\pi} \arctan\left(\frac{2x}{\pi}\right) + \frac{1}{2} = 1
+        \]
+        \qed
     \end{solution}
 
     \end{enumerate}
