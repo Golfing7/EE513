@@ -155,6 +155,31 @@
 
     \begin{solution}
 
+        In this new illustration, node 1 and 2 can communicate if link $a$ or link $c$ is active AND link $d$ is active.
+        Link $b$ is entirely irrelevant in this problem. \\
+        In our findings from part \textbf{a} and confirmed in part \textbf{e}, we found
+        \[P(A) = p^2 + p^3 - p^4\]
+        With the updated path, we now have two paths from node 1 to node 4.
+        \[A = \{(x, y, z, 1): x, y, z \in \{0, 1\}, x + z > 0\}\] \\
+        Which is the fancy way of saying that $d$ must be available, $b$ doesn't matter, and $a$ or $c$ must be available, or both.
+        In terms of probability, this is:
+        \begin{align}
+            P(A) &= 2p^2(1-p)^2 + 3p^3(1-p) + p^4 \\
+            &= 2p^2(1 - 2p + p^2) + 3p^3 - 3p^4 + p^4 \\
+            &= 2p^2 - 4p^3 + 2p^4 + 3p^3 - 3p^4 + p^4 \\
+            &= 2p^2 - p^3
+        \end{align}
+        And now we verify that this is greater than our previous finding.
+        \begin{align}
+            2p^2 - p^3 &> p^2 + p^3 - p^4 \\
+            p^2 - p^3 &> p^3 - p^4 \\
+            p^2 - 2p^3 &> -p^4 \\
+            1 - 2p &> -p^2 \\
+            1 - 2p + p^2 &> 0 \\
+            (1 - p) &> 0
+        \end{align}
+        Which is true for all $p < 1$.
+
     \end{solution}
 
     \end{enumerate}
@@ -170,6 +195,45 @@
 
     \begin{solution}
 
+        First lets begin with a base case of 1.
+        \[P\left(\bigcup_{n=1}^{1} A_n\right) = P(A_1)\]
+        Now a base case of 2.
+        \[P\left(\bigcup_{n=1}^{2} A_n\right) = P(A_1) + P(A_2) - P(A_1 \cap A_2)\]
+        This can be proven like so.
+        \[A_1 \cup A_2 = (A_1 \cap A_2') \cup (A_1 \cap A_2) \cup (A_1' \cap A_2)\]
+        Since these are all mutually exclusive, we can take the probability like this:
+        \[P(A_1 \cup A_2) = P(A_1 \cap A_2') + P(A_1 \cap A_2) + P(A_1' \cap A_2)\] \\
+        We can define each individually probability like this:
+        \begin{align}
+            P(A_1) &= P(A_1 \cap A_2) + P(A_1 \cap A_2') \\
+            P(A_2) &= P(A_1 \cap A_2) + P(A_1' \cap A_2) \\
+            P(A_1) - P(A_1 \cap A_2) &= P(A_1 \cap A_2') \\
+            P(A_2) - P(A_1 \cap A_2) &= P(A_1' \cap A_2)
+        \end{align}
+        Plugging them back into the original equation:
+        \begin{align}
+            P(A_1 \cup A_2) &= P(A_1 \cap A_2') + P(A_1 \cap A_2) + P(A_1' \cap A_2) \\
+            P(A_1 \cup A_2) &= P(A_1) - P(A_1 \cap A_2) + P(A_1 \cap A_2) + P(A_2) - P(A_1 \cap A_2) \\
+            P(A_1 \cup A_2) &= P(A_1) + P(A_2) - P(A_1 \cap A_2)
+        \end{align}
+        Thus, we've proven the base case of N=2.
+        Now, we assume that it works for a case of N=m.
+        \[
+            P\left(\bigcup_{n=1}^{m} A_n\right) = \sum_{1 \le i \le m} P(A_i) - \sum_{1 \le i < j \le m} P(A_i \cap A_j) + \cdots \pm P(A_1 \cap A_2 \cap \cdots \cap A_m).
+        \]
+        And attempt to prove that it works for N=m + 1.
+        Let $B = \bigcup_{n=1}^{m} A_n$, then by our inductive hypothesis:
+        \begin{align}
+            P(B \cup A_{m + 1}) &= P(B) + P(A_{m + 1}) - P(B \cap A_{m + 1}) \\
+            P\left(\bigcup_{n=1}^{m+1} A_n\right) &= P(B) + P(A_{m + 1}) - P(B \cap A_{m + 1}) \\
+            &= P\left(\bigcup_{n=1}^{m} A_n\right) + P(A_{m + 1}) - P\left(\left(\bigcup_{n=1}^{m} A_n\right) \cap A_{m + 1}\right) \\
+            &= P\left(\bigcup_{n=1}^{m} A_n\right) + P(A_{m + 1}) - P\left(\bigcup_{n=1}^{m} \left(A_n \cap A_{m + 1}\right)\right) \text{By distribution} \\
+            &\text{Then apply inductive hypothesis again to $\bigcup_{n=1}^{m} \left(A_n \cap A_{m + 1}\right)$} \\
+            &= P\left(\bigcup_{n=1}^{m} A_n\right) + P(A_{m + 1}) - (\sum_{1 \le i \le m} P(A_i \cap A_{m + 1})) + \cdots \pm P(A_1 \cap A_2 \cap \cdots \cap A_m \cap A_{m+1}) \\
+            &\text{Then by combining terms:} \\
+            &= \sum_{1 \le i \le m+1} P(A_i) - \sum_{1 \le i < j \le m+1} P(A_i \cap A_j) + \cdots \pm P(A_1 \cap A_2 \cap \cdots \cap A_m \cap A_{m+1})
+        \end{align}
+        \qed
     \end{solution}
 
     \newpage
@@ -182,6 +246,26 @@
 
     \begin{solution}
 
+        Let's begin with definitions, for any two events $A, B$
+        \begin{align}
+            \Pr(A \mid B) &= \frac{\Pr(A \cap B)}{\Pr(B)} \\
+            \Pr(A \mid B)\Pr(B) &= \Pr(A \cap B) \\
+            \Pr(B \mid A) &= \frac{\Pr(A \cap B)}{\Pr(A)} \\
+            \Pr(B \mid A) &= \frac{\Pr(A \mid B)}{\Pr(B)\Pr(A)}
+        \end{align}
+        With this, we establish a relation between $\Pr(A \mid B)$, $\Pr(A \cap B)$, and $\Pr(B \mid A)$. \\
+        Now, using the law of total probability (since $B$ is a partition and $A_i$ is mutually exclusive),
+        \begin{align}
+            \Pr(A_n) &= \sum_{i=1}^{M}\Pr(A_n \mid B_i)\Pr(B_i)
+        \end{align}
+        Using the original definition of conditional probability
+        \begin{align}
+            \Pr(B_m \mid A_n) &= \frac{\Pr(B_m \cap A_n)}{\Pr(A_n)} \\
+            \Pr(B_m \mid A_n) &= \frac{\Pr(B_m \cap A_n)}{\sum_{i=1}^{M}\Pr(A_n \mid B_i)\Pr(B_i)} \\
+            \Pr(B_m \mid A_n) &= \frac{\Pr(A_n \mid B_m) \Pr(B_m)}{\sum_{i=1}^{M}\Pr(A_n \mid B_i)\Pr(B_i)}
+        \end{align}
+        \qed
+
     \end{solution}
 
     \newpage
@@ -191,25 +275,162 @@
 
     \begin{solution}
 
+        Given the triangle inequality for a triangle with side lengths $x, y, z$
+        \[x < y + z,\qquad y < x + z,\qquad z < x + y\]
+        Since we're working with a unit length stick, we can simplify this inequality even more
+        \[x < \frac{1}{2}, \qquad y < \frac{1}{2}, \qquad z < \frac{1}{2}\]
+        Let $X$ and $Y$ be uniform random variables on the range $(0, 1)$.
+        Let $X < Y$ implicitly, meaning that $X$ and $Y$ are not necessarily always the first and second break respectively.
+        This makes finding the lengths $x, y, z$ easier.
+        \[
+            x = X,\qquad y = Y - X, \qquad z = 1 - Y
+        \]
+        And our inequalities
+        \begin{align}
+            X &< \frac{1}{2} \\
+            Y - X &< \frac{1}{2} \\
+            1 - Y &< \frac{1}{2}
+        \end{align}
+        \begin{tikzpicture}[scale=6]
+
+            % Axes
+            \draw[->] (-0.05,0) -- (1.15,0) node[right] {$X$};
+            \draw[->] (0,-0.05) -- (0,1.15) node[above] {$Y$};
+
+            % Tick marks
+            \foreach \t in {0.5,1} {
+                \draw (\t,0.01) -- (\t,-0.01) node[below] {\small $\t$};
+                \draw (0.01,\t) -- (-0.01,\t) node[left] {\small $\t$};
+            }
+
+            % Full sample space: unit square (light outline)
+            \draw[thin, gray] (0,0) rectangle (1,1);
+
+            % Sample space triangle: 0 < X < Y < 1
+            \fill[blue!8] (0,0) -- (1,1) -- (0,1) -- cycle;
+            \draw[blue!50!black, thick] (0,0) -- (1,1);
+            \draw[blue!50!black, thick] (0,1) -- (1,1);
+            \draw[blue!50!black, thick] (0,0) -- (0,1);
+
+            % Feasible (triangle-forming) region: vertices (0,0.5), (0.5,0.5), (0.5,1)
+            \fill[red!35] (0,0.5) -- (0.5,0.5) -- (0.5,1) -- cycle;
+            \draw[red!70!black, thick] (0,0.5) -- (0.5,0.5) -- (0.5,1) -- cycle;
+
+            % Boundary lines (dashed), labeled
+            \draw[dashed, teal] (0.5,0) -- (0.5,1.05) node[above] {\small $X=\tfrac12$};
+            \draw[dashed, teal] (0,0.5) -- (1.05,0.5) node[right] {\small $Y=\tfrac12$};
+            \draw[dashed, teal] (0,0.5) -- (0.6,1.1) node[above right] {\small $Y=X+\tfrac12$};
+
+            % Line Y = X label
+            \node[blue!50!black] at (0.85,0.95) {\small $Y=X$};
+
+            % Vertices of feasible region
+            \filldraw[black] (0,0.5) circle (0.5pt) node[above left, xshift=2pt] {\small $(0,\frac12)$};
+            \filldraw[black] (0.5,0.5) circle (0.5pt) node[below right] {\small $(\frac12,\frac12)$};
+            \filldraw[black] (0.5,1) circle (0.5pt) node[above right] {\small $(\frac12,1)$};
+
+            % Legend / labels
+            \node[blue!50!black] at (0.15,0.75) {\footnotesize sample space};
+            \node[red!70!black] at (0.22,0.6) {\footnotesize feasible};
+            \node[font=\bfseries, above] at (0.5,1.2) {Feasible Region for Triangle Formation, by Claude};
+
+        \end{tikzpicture} \\
+        These inequalities represent a triangle of area $0.125$ in the total uniform area of $0.5$, normalizing the probability gives us $0.25$.
+        \qed
+
     \end{solution}
 
     \newpage
     \section*{Problem 1.5}
     \emph{(Papoulis, based on Problem 4-21, p. 85)}
 
-    The probability of heads of a random coin is a RV $p$ uniform in the interval $(0,1)$.
+    The probability of heads of a random coin is a RV $\phi$ uniform in the interval $(0,1)$.
 
     \begin{enumerate}[label=(\alph*)]
 
-    \item Find $P\{0.3 \le p \le 0.7\}$.
+    \item Find $P\{0.3 \le \phi \le 0.7\}$.
 
     \begin{solution}
+
+        Since P is uniform, $\Pr(\phi \le a) = a$
+        \[
+            \Pr(\phi \le 0.7) - \Pr(\phi \le 0.3) = 0.7 - 0.3 = 0.4
+        \]
+        \qed
 
     \end{solution}
 
-    \item The coin is tossed 10 times and heads shows 6 times. Find the a posteriori probability that $p$ is between 0.3 and 0.7.
+    \item The coin is tossed 10 times and heads shows 6 times. Find the a posteriori probability that $\phi$ is between 0.3 and 0.7.
 
     \begin{solution}
+
+        That is, to find $\Pr(0.3 \le \phi \le 0.7 \mid \text{6 heads in 10 tosses})$.
+        We need to find everything for the following equation
+        \[
+            f_{\phi \mid data}(x) = \frac{f_{\phi}(x) \cdot \Pr(\text{6 heads in 10} \mid \phi = x)}{\Pr(\text{6 heads})}
+        \]
+        \begin{align}
+            f_{\phi}(x) &= 1 \\
+            f_{\phi}(x)\Pr(\text{6 heads in 10} \mid \phi = x) = \binom{10}{6}\phi^6(1-\phi)^4
+        \end{align}
+        We need to integrate this over the interval 0--1 using the Beta function
+        \begin{align}
+            \binom{10}{6} \int_{0}^{1} x^6(1-x)^4 dx &= \binom{10}{6} \cdot B(7, 5) \\
+        \end{align}
+        Wit the beta function being
+        \begin{align}
+            B(7, 5) &= \frac{6!4!}{11!} \\
+        \end{align}
+        Plugging this back in
+        \begin{align}
+            \binom{10}{6} \cdot B(7, 5) &= \binom{10}{6} \cdot \frac{6!4!}{11!} \\
+            &= \frac{10!}{6!4!} \cdot \frac{6!4!}{11!} \\
+            &= \frac{10!}{11!} \\
+            &= \frac{1}{11} \\
+            &= \Pr(\text{6 heads})
+        \end{align}
+        Going back to our original equation
+        \begin{align}
+            f_{\phi \mid data} &= \frac{f_{\phi}(x) \cdot \Pr(\text{6 heads in 10} \mid \phi = x)}{\Pr(\text{6 heads})} \\
+            f_{\phi \mid data} &= 11 \cdot \Pr(\text{6 heads in 10} \mid \phi = x) \\
+            \Pr(0.3 \leq \phi \leq 0.7) &= \int_{0.3}^{0.7} f_{\phi \mid data}(x)dx = 11 \binom{10}{6} \int_{0.3}^{0.7} x^6(1-x)^{4}dx \\
+        \end{align}
+
+        \begin{align}
+            \Pr(0.3 \le \phi \le 0.7 \mid \text{data}) &= 11\binom{10}{6}\int_{0.3}^{0.7} x^6(1-x)^4\,dx
+        \end{align}
+
+        Expanding $(1-x)^4$ via the binomial theorem:
+        \begin{align}
+            (1-x)^4 &= \sum_{j=0}^{4} \binom{4}{j}(-x)^j = \binom{4}{0} - \binom{4}{1}x + \binom{4}{2}x^2 - \binom{4}{3}x^3 + \binom{4}{4}x^4
+        \end{align}
+
+        Multiplying through by $x^6$:
+        \begin{align}
+            x^6(1-x)^4 &= \binom{4}{0}x^6 - \binom{4}{1}x^7 + \binom{4}{2}x^8 - \binom{4}{3}x^9 + \binom{4}{4}x^{10}
+        \end{align}
+
+        Integrating term by term:
+        \begin{align}
+            \int_{0.3}^{0.7} x^6(1-x)^4\,dx
+            &= \left[\binom{4}{0}\frac{x^7}{7} - \binom{4}{1}\frac{x^8}{8} + \binom{4}{2}\frac{x^9}{9} - \binom{4}{3}\frac{x^{10}}{10} + \binom{4}{4}\frac{x^{11}}{11}\right]_{0.3}^{0.7}
+        \end{align}
+
+        Evaluating at the bounds:
+        \begin{align}
+            &= \left(\frac{(0.7)^7}{7} - \frac{4(0.7)^8}{8} + \frac{6(0.7)^9}{9} - \frac{4(0.7)^{10}}{10} + \frac{(0.7)^{11}}{11}\right) \notag\\
+            &\quad - \left(\frac{(0.3)^7}{7} - \frac{4(0.3)^8}{8} + \frac{6(0.3)^9}{9} - \frac{4(0.3)^{10}}{10} + \frac{(0.3)^{11}}{11}\right)
+        \end{align}
+
+        \begin{align}
+            \int_{0.3}^{0.7} x^6(1-x)^4\,dx &\approx 0.0003325005331\dots
+        \end{align}
+
+        Therefore:
+        \begin{align}
+            \Pr(0.3 \le \phi \le 0.7 \mid \text{data}) &\approx 11\binom{10}{6}\cdot0.0003325005331 \approx 0.7680762316
+        \end{align}
+        \qed
 
     \end{solution}
 
@@ -227,11 +448,29 @@
 
     \begin{solution}
 
+        Lemme learn ya something real quick buddy, this question is WAYYYY too easy for a master mario such as myself.
+        It's as simple as this, plug-in the numbuhs and get the ansuh.
+        For starters, let this little gizmo do some magic on yah: $X$ is a binomial random variable representing the number of bit failures, with probability $p = 10^{-2}$ and $n = 50$
+        Just like this, my homeboy
+        \begin{align}
+            \Pr(\text{Block Accepted})\} = \Pr(X = 0) + \Pr(X = 1) + \Pr(X = 2) &= (1-p)^{50} + \binom{50}{1}p(1-p)^{49} + \binom{50}{2}p^2(1-p)^{48} \\
+            &\approx 0.98618272
+        \end{align}
+        \qed
+
     \end{solution}
 
     \item If the block has more than 2 errors, then the block is retransmitted. Find the probability that $M$ retransmissions are required.
 
     \begin{solution}
+
+        If we assume that by $M$ retransmissions, that means that $M$ transmissions fail, and transmission $M + 1$ is successful.
+        This is a geometric random variable $X$ with $p = 0.98618272$ from the previous problem.
+        \begin{align}
+            \Pr(\text{M retransmissions required}) &= \Pr(X = M + 1) \\
+            &= p\cdot(1 - p)^M \\
+            &= 0.98618272\cdot(0.01381728)^M
+        \end{align}
 
     \end{solution}
 
@@ -249,6 +488,49 @@
     where $a$ and $b$ are constants. What is the relationship between $a$ and $b$? Determine and plot the cumulative probability distribution function (cdf) of $X$ for $a = 1/2$.
 
     \begin{solution}
+
+        To find the relationship, we can integrate over the entire domain to ensure that it's equal to 1.
+        \begin{align}
+            \int_{-\infty}^{\infty} a e^{-b|x|} dx &= 2a\int_{0}^{\infty} e^{-bx} dx \\
+            &= 2a \left[-\frac{e^{-bx}}{b}\right]_{0}^{\infty} \\
+            &= 2a \left(\frac{1}{b}\right)
+        \end{align}
+        Using the fact that this must equal 1,
+        \begin{align}
+            2a \left(\frac{1}{b}\right) &= 1 \\
+            2a &= b
+        \end{align}
+
+        Now given $a = \frac{1}{2}$, $b = 1$ and our original \emph{PDF}
+        \begin{align}
+            f_X(x) = \frac{1}{2} e^{-|x|}
+        \end{align}
+
+        And to determine the \emph{CDF}, we handle for $x \le 0$ and $x \geq 0$ separately. \\
+        For $x \geq 0$:
+        \begin{align}
+            F_X(x) &= \int_{-\infty}^{0} \frac{1}{2} e^{-t} dt + \int_{0}^{x} \frac{1}{2} e^{-t} dt
+        \end{align}
+
+        Evaluating the first of the two integrals:
+        \begin{align}
+            \int_{-\infty}^{0} \frac{1}{2} e^{-|t|} dt &= \frac{1}{2} \left[e^{t}\right]_{-\infty}^{0} \\
+            &= \frac{1}{2} (1)
+            &= \frac{1}{2}
+        \end{align}
+
+        The second of the two give us:
+        \begin{align}
+            \int_{0}^{x} \frac{1}{2} e^{-t} dt &= \frac{1}{2} \left[-e^{-t}\right]_{0}^{x}\\
+            &= \frac{1}{2} \left(-e^{-x} + 1\right) \\
+            &= \frac{-e^{-x}}{2} + \frac{1}{2}
+        \end{align}
+
+        Added together, we see for $x \geq 0$:
+        \[
+            F_X(x) = \frac{1}{2} + \frac{-e^{-x}}{2} + \frac{1}{2} = 1 - e^{-x}\frac{1}{2}
+        \]
+
 
     \end{solution}
 
