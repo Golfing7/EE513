@@ -92,9 +92,9 @@
         That is $C = \{(x, x, 1, x): x \in \{0, 1\}\}$ and $D = \{(x, 1, x, 1): x \in \{0, 1\}\}$.
         Therefore, $P(C \cup D) = P(C) + P(D) - P(C \cap D)$ \\
         Individually,
-        \[P(C) = p^4 + 3(p^3(1 - p)) + 3(p^2(1 - p)^2) + p(1-p)^3 = p]\] \\
+        \[P(C) = p^4 + 3(p^3(1 - p)) + 3(p^2(1 - p)^2) + p(1-p)^3 = p\] \\
         \[P(D) = p^4 + 2(p^3(1 - p)) + p^2(1-p)^2 = p^2\] \\
-        \[P(C \cap D) = p^4 + p^3(1 - p) = p^3]\]
+        \[P(C \cap D) = p^4 + p^3(1 - p) = p^3\]
         Together,
         \begin{align}
             P(C \cup D) &= p + p^2 - p^3\\
@@ -178,7 +178,7 @@
             p^2 - 2p^3 &> -p^4 \\
             1 - 2p &> -p^2 \\
             1 - 2p + p^2 &> 0 \\
-            (1 - p) &> 0
+            (1 - p)^2 &> 0
         \end{align}
         Which is true for all $p < 1$.
 
@@ -253,7 +253,7 @@
             \Pr(A \mid B) &= \frac{\Pr(A \cap B)}{\Pr(B)} \\
             \Pr(A \mid B)\Pr(B) &= \Pr(A \cap B) \\
             \Pr(B \mid A) &= \frac{\Pr(A \cap B)}{\Pr(A)} \\
-            \Pr(B \mid A) &= \frac{\Pr(A \mid B)}{\Pr(B)\Pr(A)}
+            \Pr(B \mid A) &= \frac{\Pr(B)\Pr(A \mid B)}{\Pr(A)}
         \end{align}
         With this, we establish a relation between $\Pr(A \mid B)$, $\Pr(A \cap B)$, and $\Pr(B \mid A)$. \\
         Now, using the law of total probability (since $B$ is a partition and $A_i$ is mutually exclusive),
@@ -449,13 +449,9 @@
     \item If the block has 2 or fewer errors then the receiver accepts the block. Find the probability that the block is accepted.
 
     \begin{solution}
-
-        Lemme learn ya something real quick buddy, this question is WAYYYY too easy for a master mario such as myself.
-        It's as simple as this, plug-in the numbuhs and get the ansuh.
-        For starters, let this little gizmo do some magic on yah: $X$ is a binomial random variable representing the number of bit failures, with probability $p = 10^{-2}$ and $n = 50$
-        Just like this, my homeboy
+        $X$ is a binomial random variable representing the number of bit failures, with probability $p = 10^{-2}$ and $n = 50$:
         \begin{align}
-            \Pr(\text{Block Accepted})\} = \Pr(X = 0) + \Pr(X = 1) + \Pr(X = 2) &= (1-p)^{50} + \binom{50}{1}p(1-p)^{49} + \binom{50}{2}p^2(1-p)^{48} \\
+            \Pr(\text{Block Accepted}) = \Pr(X = 0) + \Pr(X = 1) + \Pr(X = 2) &= (1-p)^{50} + \binom{50}{1}p(1-p)^{49} + \binom{50}{2}p^2(1-p)^{48} \\
             &\approx 0.98618272
         \end{align}
         \qed
@@ -517,7 +513,7 @@
         Evaluating the first of the two integrals:
         \begin{align}
             \int_{-\infty}^{0} \frac{1}{2} e^{-|t|} dt &= \frac{1}{2} \left[e^{t}\right]_{-\infty}^{0} \\
-            &= \frac{1}{2} (1)
+            &= \frac{1}{2} (1) \\
             &= \frac{1}{2}
         \end{align}
 
@@ -683,8 +679,32 @@
 
     \begin{solution}
 
+        Here is a graph, drawn using Desmos of the $Q(x)$ function, the lower bound, and the upper bound. \\
         % Suggested: generate the plot in Python/MATLAB and include it here, e.g.
-        % \includegraphics[width=0.7\textwidth]{q_function_bounds.png}
+        \includegraphics[width=0.7\textwidth]{q_function_bounds} \\
+
+        It appears that, as x increases, the bounds around $Q(x)$ become tighter.
+        Particularly, the lower bound is equal to $0$ at $x = 1$.
+        Since we expressed the $Q(x)$ function as a relation to the $cdf$, we know its value cannot take on negative numbers, so the lower bound is useless where $x <= 1$.
+        \begin{center}
+            \begin{tabular}{|c|c|c|c|c|c|}
+                \hline
+                $x$ & $Q(x)$ & Lower bound & Upper bound & $Q(x)-$Lower & Upper$-Q(x)$ \\
+                \hline
+                1.0 & 0.158655 & 0 & 0.241971 & 0.158655 & 0.083316 \\
+                \hline
+                1.5 & 0.0668072 & 0.0479695 & 0.0863451 & 0.0188377 & 0.0195379 \\
+                \hline
+                2.0 & 0.0227501 & 0.0202466 & 0.0269955 & 0.0025035 & 0.0042454 \\
+                \hline
+                3.0 & 0.0013499 & 0.00131314 & 0.00147728 & 0.00003676 & 0.00012738 \\
+                \hline
+            \end{tabular}
+        \end{center}
+        As x increases toward infinity, the bounds around $Q(x)$ become tighter, with $Q(x)$ seeming to favor the lower bound.
+        As $x \to 0^+$, the bounds diverge and become useless at approximating $Q(x)$.
+        As $x \to \infty$, the bounds converge to 0 directly.
+
 
     \end{solution}
 
