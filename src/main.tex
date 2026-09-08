@@ -623,6 +623,60 @@
 
     \begin{solution}
 
+        First we'll integrate using integration by parts the integral present in the Q function.
+        Using:
+        \begin{align}
+            u &= \frac{1}{y} \\
+            du &= -\frac{1}{y^2}dy \\
+            v &= -e^{-y^2/2} \\
+            dv &= ye^{-y^2/2}dy
+        \end{align}
+        \begin{align}
+            \int_x^{+\infty} \left(\frac{1}{y}\right) \left(y e^{-y^2/2}\right) dy &= \left[-\frac{e^{-y^2/2}}{y}\right]^{\infty}_{x} - \int_{x}^{\infty} \frac{e^{-y^2/2}}{y^2}dy \\
+            &= \frac{e^{-x^2/2}}{x} - \int_{x}^{\infty} \frac{e^{-y^2/2}}{y^2}dy
+        \end{align}
+        Therefore,
+        \begin{align}
+            \sqrt{2\pi}Q(x) = \frac{e^{-x^2/2}}{x} - \int_{x}^{\infty} \frac{e^{-y^2/2}}{y^2}dy
+        \end{align}
+        Because of this equality, and the fact that $\int_{x}^{\infty} \frac{e^{-y^2/2}}{y^2}dy$ is strictly positive, we know that
+        \begin{align}
+            Q(x) < \frac{e^{-x^2/2}}{x\sqrt{2\pi}}
+        \end{align}
+        We have established the upper bound.
+
+        To establish the lower bound, we will perform the integral remaining in the $Q(X)$ expression from before.
+        \begin{align}
+            \int_{x}^{\infty} \frac{e^{-y^2/2}}{y^2}dy &= \int_{x}^{\infty} \frac{1}{y^3}ye^{-y^2/2}dy
+        \end{align}
+        Using the following $u, v, du, dv$ we will do integration by parts.
+        \begin{align}
+            u &= \frac{1}{y^3} \\
+            du &= -3\frac{1}{y^4} \\
+            v &= -e^{-y^2/2} \\
+            dv &= ye^{-y^2/2}
+        \end{align}
+        Starting with:
+        \begin{align}
+            \int_{x}^{\infty} \frac{1}{y^3}ye^{-y^2/2}dy &= \left[-\frac{1}{y^3}e^{-y^2/2}\right]_{x}^{\infty} - \int_{x}^{\infty} e^{-y^2/2}3\frac{1}{y^4}dy \\
+            &= \frac{e^{-x^2/2}}{x^3} - 3\int_{x}^{\infty} e^{-y^2/2}\frac{1}{y^4}dy
+        \end{align}
+        Plugging this back into our equation above,
+        \begin{align}
+            \int_{x}^{\infty} \frac{e^{-y^2/2}}{y^2}dy &= \frac{e^{-x^2/2}}{x^3} - 3\int_{x}^{\infty} e^{-y^2/2}\frac{1}{y^4}dy
+        \end{align}
+        Since we know the 2nd term is strictly positive
+        \begin{align}
+            \int_{x}^{\infty} \frac{e^{-y^2/2}}{y^2}dy < \frac{e^{-x^2/2}}{x^3}
+        \end{align}
+        And if we put it back into our equation relating it to Q(x)
+        \begin{align}
+            \sqrt{2\pi}Q(x) &> \frac{e^{-x^2/2}}{x} - \frac{e^{-x^2/2}}{x^3} \\
+            Q(x) &> \frac{e^{-x^2/2}}{x\sqrt{2\pi}} - \frac{e^{-x^2/2}}{x^3\sqrt{2\pi}} \\
+            Q(x) &> \frac{e^{-x^2/2}}{x\sqrt{2\pi}} - \frac{e^{-x^2/2}}{x^3\sqrt{2\pi}} \\
+            Q(x) &> \frac{1}{x\sqrt{2\pi}}\left(1 - \frac{1}{x^2}\right) e^{-x^2/2}
+        \end{align}
+        \qed
     \end{solution}
 
     \item Draw a graph of the Q-function and its upper and lower bounds in part (a). For what values of $x$ are the bounds tight?
