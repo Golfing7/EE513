@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{EE 513 --- Homework 2}
+\lhead{\theauthorname}
+\rfoot{\thepage}
+
+% ---- Fill in your name here ----
+\newcommand{\theauthorname}{Andrew Bowie}
+
+\title{EE 513: Stochastic Systems Theory \\ Fall 2026 \\ Homework Assignment 2}
+\author{\theauthorname}
+\date{Due: Tuesday, September 22, 2026}
+
+\begin{document}
+
+\maketitle
+
+\noindent \textit{Note: Three of the following problems will be randomly selected and graded.}
+\newenvironment{solution}{\par\noindent\textbf{Solution.}\ }{\par\vspace{6pt}}
+
+\vspace{1em}
+
+% ============================================================
+\section*{Problem 2.1}
+Let $X$ be a Gaussian random variable with $m = 5$ and $\sigma^2 = 16$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Using tables of the Q-function, find $P[X > 4]$, $P[X \geq 7]$, $P[2 < X < 7]$, $P[6 \leq X \leq 8]$.
+    \begin{solution}
+        Given that $m = 5$ and $\sigma^2 = 16$, we can find the $Z$ score values with the formula
+        \[
+            Z = \frac{x - m}{\sigma} = \frac{x - 5}{4}
+        \]
+        \begin{align*}
+            P[X > 4] &= Q(-0.25) = 1 - Q(0.25) = 0.5987 \\[1em]
+            P[X \geq 7] &= Q(0.5) = 0.3085 \\[1em]
+            P[2 < X < 7] &= P[X > 2] - P[X > 7] \\
+            &= Q(-0.75) - Q(0.5) \\
+            &= 1 - 0.2266 - 0.3085 \\
+            &= 0.4649 \\[1em]
+            P[6 \leq X \leq 8] &= P[X > 6] - P[X > 8] \\
+            &= Q(0.25) - Q(0.75) \\
+            &= 0.4013 - 0.2266 \\
+            &= 0.1747
+        \end{align*}
+        \qed
+    \end{solution}
+
+    \item Find $a$, if $P[X < a] = 0.8869$.
+    \begin{solution}
+        Given that
+        \[
+            P[X < a] = 1 - P[X > a] = 0.8869
+        \]
+        we relate it to
+        \[
+            Z = \frac{a - m}{\sigma} = \frac{a - 5}{4}
+        \]
+        By checking the Q-table, $Z = 1.21$.
+        \begin{align*}
+            1.21 &= \frac{a - 5}{4}\\
+            4.84 &= a - 5\\
+            a &= 9.84
+        \end{align*}
+        \qed
+    \end{solution}
+
+    \vspace{3em}
+
+    \item Find $c$, if $P[13 < X \leq c] = 0.0123$.
+    \begin{solution}
+        To break down the probability here, we can do:
+        \begin{align*}
+            P[13 < X \leq c] &= P[X > 13] - P[X > c]
+        \end{align*}
+        Where $P[X > 13] = Q(2) = 0.02275$, solving for $P[X > c]$
+        \begin{align*}
+            0.02275 - P[X > c] = 0.0123 \\
+            P[X > c] = 0.01045
+        \end{align*}
+        Using the same structure as above to solve for $Z$
+        \begin{align*}
+            Z = 2.31 \\
+            Z = \frac{c - 5}{4} \\
+            9.24 = c - 5 \\
+            14.24 = c
+        \end{align*}
+        \qed
+    \end{solution}
+
+    \vspace{3em}
+
+    \item Show that the Q-function satisfies $Q(-x) = 1 - Q(x)$.
+    \begin{solution}
+        Definition of $Q(x)$
+        \begin{align*}
+            Q(X) = \frac{1}{\sqrt{2\pi}} \int_{x}^{\infty} e^{\dfrac{-t^2}{2}} dt \\[1em]
+        \end{align*}
+        With u substitution
+        \begin{align*}
+            u &= -t \\
+            du &= -dt \\
+            Q(-X) &= \frac{1}{\sqrt{2\pi}} \int_{-X}^{\infty} e^{\dfrac{-t^2}{2}} dt \\
+            Q(-X) &= \frac{1}{\sqrt{2\pi}} -\int_{X}^{-\infty} e^{\dfrac{-u^2}{2}} du \\
+            Q(-X) &= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{X} e^{\dfrac{-u^2}{2}} du
+        \end{align*}
+        This last definition happens to be our cdf of a Gaussian random variable
+        \begin{align*}
+            Q(-X) = F(X)
+        \end{align*}
+        $Q(X)$ relates to $F(X)$ by $Q(X) = 1 - F(X)$ so
+        \begin{align*}
+            Q(X) = 1 - Q(-X) \\
+            Q(-X) = 1 - Q(X)
+        \end{align*}
+        \qed
+    \end{solution}
+
+    \vspace{3em}
+
+\end{enumerate}
+
+% ============================================================
+\newpage
+\section*{Problem 2.2}
+The cumulative distribution function $P_X(x) = P(X \leq x)$ for a random variable $X$ is shown in the assignment handout.
+
+\begin{enumerate}[label=(\alph*)]
+    \item What type of variable (discrete, continuous, or mixed) is $X$?
+    \begin{solution}
+        This is a $mixed$ variable.
+        Between the range of $0 \leq x \leq 1$, $P_x(x)$ increases linearly in a continuous fashion.
+        However, at $x = 0$ and $x = 1$ there are distinct jumps which make this non-continuous, so this is mixed.
+    \end{solution}
+
+    \vspace{2em}
+
+    \item Evaluate the following probabilities:
+
+    \begin{align*}
+        P\left(X < -\tfrac{1}{2}\right) &= 0 \\[1.5em]
+        P(X < 0) &= 0 \\[1.5em]
+        P(X \leq 0) &= 0.25\\[1.5em]
+        P\left(\tfrac{1}{4} \leq X < 1\right) &= P(X < 1) - P(X < \tfrac{1}{4}) = 0.5 - 0.3125 = 0.1875 \\[1.5em]
+        P\left(\tfrac{1}{4} \leq X \leq 1\right) &= P(X \leq 1) - P(X < \tfrac{1}{4}) = 1 - 0.3125 = 0.6875 \\[1.5em]
+        P\left(X > \tfrac{1}{2}\right) &= 1 - P(X \leq \tfrac{1}{2}) = 1 - 0.375 = 0.625 \\[1.5em]
+        P(X \geq 5) &= 1\\[1.5em]
+        P(X < 5) &= 1
+    \end{align*}
+
+\end{enumerate}
+
+% ============================================================
+\newpage
+\section*{Problem 2.3}
+Let $Y = e^X$, where $X$ is a random variable.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Determine the cumulative distribution function and probability density function of $Y$.
+
+    \vspace{5em}
+
+    \item Determine the probability density function of $Y$ if $X$ is a Gaussian random variable $N(m, \sigma^2)$ with mean $m$ and variance $\sigma^2$:
+    \[
+        p_X(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-(x-m)^2/(2\sigma^2)}.
+    \]
+
+    \vspace{5em}
+
+\end{enumerate}
+
+% ============================================================
+\newpage
+\section*{Problem 2.4}
+Let the radius $X$ have the following probability density function (pdf):
+\[
+    f_X(x) =
+    \begin{cases}
+        cx(1-x), & 0 < x < 1 \\
+        0, & \text{elsewhere}
+    \end{cases}
+\]
+
+\begin{enumerate}[label=(\alph*)]
+    \item Find $c$.
+
+    \vspace{3em}
+
+    \item Find the pdf of the area covered by a disk with radius $X$.
+
+    \vspace{4em}
+
+    \item Find the pdf of the volume of a sphere with radius $X$.
+
+    \vspace{4em}
+
+    \item Find the pdf of $Y = X^n$.
+
+    \vspace{4em}
+
+\end{enumerate}
+
+% ============================================================
+\newpage
+\section*{Problem 2.5}
+This problem examines the relationship between $E[X]$ and $E\!\left[\frac{1}{X}\right]$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Suppose that
+    \[
+        X =
+        \begin{cases}
+            -1, & \text{with probability } \frac{1}{9} \\
+            \frac{1}{2}, & \text{with probability } \frac{4}{9} \\
+            2, & \text{with probability } \frac{4}{9}
+        \end{cases}
+    \]
+    Show that $E\!\left[\dfrac{1}{X}\right] = \dfrac{1}{E[X]}$.
+
+    \vspace{5em}
+
+    \item Suppose that $X$ is uniformly distributed on the interval $(1,2)$. Show that $E(1/X) \neq 1/E(X)$.
+
+    \vspace{5em}
+
+\end{enumerate}
+
+% ============================================================
+\newpage
+\section*{Problem 2.6}
+Let $X$ be a Laplacian-distributed random variable; that is,
+\[
+    f_X(x) = \frac{\alpha}{2} \exp(-\alpha |x|), \qquad -\infty < x < +\infty.
+\]
+
+\begin{enumerate}[label=(\alph*)]
+    \item Determine the characteristic function $M_X(jv) = E[e^{jvX}]$ of $X$.
+
+    \vspace{5em}
+
+    \item Determine the mean and variance of $X$ by applying the moment property of the characteristic function.
+
+    \vspace{5em}
+
+\end{enumerate}
+
+% ============================================================
+\newpage
+\section*{Problem 2.7}
+The sample $X$ of a speech signal is a Laplacian random variable with parameter $\alpha = 1$. Suppose $X$ is quantized by a nonuniform quantizer consisting of four intervals:
+$(-\infty, -a]$, $(-a, 0]$, $(0, a]$, and $(a, +\infty)$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Find the value of $a$ so that $X$ is equally likely to fall in each of the four intervals.
+
+    \vspace{4em}
+
+    \item Find the representation point $x_1 = q(X)$ for $X$ in $(0,a]$ that minimizes the mean-square error,
+    \[
+        \int_0^a (x - x_1)^2 f_X(x)\, dx.
+    \]
+    \textit{Hint: Differentiate with respect to $x_1$.} Find representation points for the other intervals.
+
+    \vspace{5em}
+
+    \item Evaluate the mean-square error of the quantizer: $E[(X - q(X))^2]$.
+
+    \vspace{5em}
+
+\end{enumerate}
+
+\end{document}
