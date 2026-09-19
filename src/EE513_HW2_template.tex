@@ -165,6 +165,41 @@ Let $Y = e^X$, where $X$ is a random variable.
 
 \begin{enumerate}[label=(\alph*)]
     \item Determine the cumulative distribution function and probability density function of $Y$.
+    \begin{solution}
+
+        By definition, the cdf of $Y$ is $F_Y(y) = P(Y \leq y) = P(e^X \leq y)$
+        We can simplify this by taking the natural log of each side.
+        \begin{align*}
+            F_Y(y) &= P(Y \leq y) \\
+            &= P(e^X \leq y) \\
+            &= P(\ln{e^X} \leq \ln{y}) \\
+            &= P(X \leq \ln{y}) \\
+            &= F_X(\ln{y})
+        \end{align*}
+        This is assuming strictly for $y > 0$.
+        For $y \leq 0$, $F_Y(y) = 0$.
+
+        To obtain the pdf of $Y$, we can take the derivative of $F_Y(y)$ with respect to $y$.
+        Strictly for $y > 0$.
+        \begin{align*}
+            \dfrac{d}{dy} F_Y(y) &= \dfrac{d}{dy} F_X(\ln{y}) \\
+            &= f_X(\ln{y})\cdot\dfrac{1}{y}
+        \end{align*}
+
+        Therefore,
+        \begin{gather*}
+            F_Y(y) =
+            \begin{cases}
+                F_X(\ln{y}), & y > 0 \\
+                0, & y \leq 0
+            \end{cases}\\
+            f_Y(y) =
+            \begin{cases}
+                f_X(\ln{y})\cdot\dfrac{1}{y}, & y > 0 \\
+                0, & y \leq 0
+            \end{cases}\\
+        \end{gather*}
+    \end{solution}
 
     \vspace{5em}
 
@@ -172,6 +207,23 @@ Let $Y = e^X$, where $X$ is a random variable.
     \[
         p_X(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-(x-m)^2/(2\sigma^2)}.
     \]
+    \begin{solution}
+
+        That is to use this $p_X$ in place of $f_X(\ln{y})$ we found for $f_Y$ in part a.
+        For $y \leq 0$, $f_Y(y) = 0$
+        \begin{align*}
+            f_Y(y) &= f_X(\ln{y}) \cdot \dfrac{1}{y} \\
+            &= \left(\frac{1}{\sqrt{2\pi\sigma^2}} e^{-(\ln{y}-m)^2/(2\sigma^2)}\right) \cdot \dfrac{1}{y}
+        \end{align*}
+        Therefore
+        \[
+            f_Y(y) =
+            \begin{cases}
+                \left(\frac{1}{\sqrt{2\pi\sigma^2}} e^{-(\ln{y}-m)^2/(2\sigma^2)}\right) \cdot \dfrac{1}{y}, & y > 0 \\
+                0, & y \leq 0
+            \end{cases}
+        \]
+    \end{solution}
 
     \vspace{5em}
 
@@ -191,18 +243,101 @@ Let the radius $X$ have the following probability density function (pdf):
 
 \begin{enumerate}[label=(\alph*)]
     \item Find $c$.
+    \begin{solution}
+
+        Given that the cdf of a random variable $X$ approaches 1 as $x \to 1$ (since $f_X$ is only defined on the range $(0, 1)$), we can use that to solve for the problem here.
+        Setting up the integral:
+        \begin{align*}
+            F_X(x) &= P(X \leq x) \\
+            &= \int_{0}^{x} (ct - ct^2)dt \\
+            &= \int_{0}^{x} ct dt - \int_{0}^{x} ct^2 dt \\
+            &= \left[\dfrac{ct^2}{2}\right]_{0}^{x} - \left[\dfrac{ct^3}{3}\right]_{0}^{x} \\
+            &= \dfrac{cx^2}{2} - \dfrac{cx^3}{3}
+        \end{align*}
+        Now that we have the cdf, we can let $x \to 1$ to find $c$.
+        \begin{align*}
+            1 &= \lim_{x \to 1} F_X(x) \\
+            &= \dfrac{c}{2} - \dfrac{c}{3} \\
+            &= \dfrac{c}{6} \\
+            c &= 6
+        \end{align*}
+    \end{solution}
 
     \vspace{3em}
 
     \item Find the pdf of the area covered by a disk with radius $X$.
+    \begin{solution}
+
+        To define this pdf, I'll start with the cdf.
+        Keep in mind that since $X$ is the radius, we assume that $X \geq 0$ naturally.
+        We also assume that $a \geq 0$ since an area cannot be negative.
+        \begin{align*}
+            F_A(a) &= P(A \leq a) \\
+            &= P(\pi X^2 \leq a) \\
+            &= P\left(X \leq \sqrt{\dfrac{a}{\pi}}\right) \\
+            F_X\left(\sqrt{\dfrac{a}{\pi}}\right) &= F_A(a)
+        \end{align*}
+        We want to find the pdf, so we take the derivative.
+        \begin{align*}
+            \dfrac{d}{da} F_A(a) &= \dfrac{d}{da} F_X\left(\sqrt{\dfrac{a}{\pi}}\right) \\
+            f_A(a) &= f_X\left(\sqrt{\dfrac{a}{\pi}}\right)\cdot\left(\dfrac{1}{2\sqrt{a\pi}}\right)
+        \end{align*}
+
+        Given that $0 < x < 1$, $0 < a < \pi$.
+        We also know $f_X$, so plugging it in we get
+        \begin{align*}
+            f_A(a) &= f_X\left(\sqrt{\dfrac{a}{\pi}}\right)\cdot\left(\dfrac{1}{2\sqrt{a\pi}}\right) \\
+            &= 6\sqrt{\dfrac{a}{\pi}}\left( 1 - \sqrt{\dfrac{a}{\pi}} \right) \cdot \left(\dfrac{1}{2\sqrt{a\pi}}\right) \\
+            &= \left(6\sqrt{\dfrac{a}{\pi}} - 6\dfrac{a}{\pi}\right) \cdot \left(\dfrac{1}{2\sqrt{a\pi}}\right) \\
+            &= \dfrac{3}{\pi} - \dfrac{3\sqrt{a}}{\pi^{3/2}}
+        \end{align*}
+    \end{solution}
 
     \vspace{4em}
 
     \item Find the pdf of the volume of a sphere with radius $X$.
+    \begin{solution}
+
+        Using the volume formula: $V = \dfrac{4}{3}\pi X^3$.
+        \begin{align*}
+            F_V(v) &= P(V \leq v) \\
+            &= P(\dfrac{4}{3} \pi X^3 \leq v) \\
+            &= P(X^3 \leq \dfrac{3v}{4\pi}) \\
+            &= P(X \leq \sqrt[3]{\dfrac{3v}{4\pi}}) \\
+            F_V(v) &= F_X\left(\sqrt[3]{\dfrac{3v}{4\pi}}\right)
+        \end{align*}
+        \begin{align*}
+            0 < x &< 1 \\
+            0 < v &< \dfrac{4}{3}\pi \\
+            \dfrac{d}{dv} F_V(v) &= \dfrac{d}{dv} F_X\left(\sqrt[3]{\dfrac{3v}{4\pi}}\right) \\
+            &= f_X\left(\sqrt[3]{\dfrac{3v}{4\pi}}\right) \cdot \left(\dfrac{\sqrt[3]{3}}{3\sqrt[3]{4\pi}v^{2/3}}\right) \\
+            &= 6\left(\sqrt[3]{\dfrac{3v}{4\pi}} - \left(\dfrac{3v}{4\pi}\right)^{2/3}\right) \cdot \left(\dfrac{\sqrt[3]{3}}{3\sqrt[3]{4\pi}v^{2/3}}\right) \\
+            &= 6\left( \dfrac{1}{3^{1/3} (4\pi)^{2/3} v^{1/3} } - \dfrac{1}{4\pi} \right)
+        \end{align*}
+        The domain of this being $0 < v < \dfrac{4}{3}\pi$ with $f_V(v) = 0$ outside of that.
+    \end{solution}
 
     \vspace{4em}
 
     \item Find the pdf of $Y = X^n$.
+    \begin{solution}
+
+        The domain is $0 < x < 1$ as previously defined for X and $0 < y < 1$.
+        \begin{align*}
+            F_Y(y) &= P(Y \leq y) \\
+            &= P(X^n \leq y) \\
+            &= P(X \leq \sqrt[n]{y}) \\
+            F_Y(y) &= F_X(\sqrt[n]{y})
+        \end{align*}
+        \begin{align*}
+            \dfrac{d}{dy} F_Y(y) &= \dfrac{d}{dy} F_X(\sqrt[n]{y}) \\
+            &= f_X(\sqrt[n]{y})\cdot \left( \dfrac{\sqrt[n]{y}}{yn} \right) \\
+            &= 6\sqrt[n]{y}\left(1 - \sqrt[n]{y}\right) \cdot \left( \dfrac{\sqrt[n]{y}}{yn} \right) \\
+            &= \left(6\sqrt[n]{y} - 6y^{2/n}\right) \cdot \left( \dfrac{\sqrt[n]{y}}{yn} \right) \\
+            &= 6\dfrac{y^{2/n}}{yn} - 6 \dfrac{y^{3/n}}{yn}
+        \end{align*}
+        Outside $0 < y < 1$, $f_Y(y) = 0$
+    \end{solution}
 
     \vspace{4em}
 
@@ -224,10 +359,69 @@ This problem examines the relationship between $E[X]$ and $E\!\left[\frac{1}{X}\
         \end{cases}
     \]
     Show that $E\!\left[\dfrac{1}{X}\right] = \dfrac{1}{E[X]}$.
+    \begin{solution}
+
+        We can check both to see if this is true.
+        \begin{align*}
+            E\!\left[\dfrac{1}{X}\right] &= -1\cdot\dfrac{1}{9} + 2\cdot\dfrac{4}{9} + \dfrac{1}{2}\cdot\dfrac{4}{9} \\
+            &= -\dfrac{1}{9} + \dfrac{8}{9} + \dfrac{2}{9} \\
+            &= 1
+        \end{align*}
+        For the second part
+        \begin{align*}
+            E[X] &= -1\cdot\dfrac{1}{9} + \dfrac{1}{2}\cdot\dfrac{4}{9} + 2\cdot\dfrac{4}{9} \\
+            &= -\dfrac{1}{9} + \dfrac{2}{9} + \dfrac{8}{9} \\
+            &= 1 \\
+            \dfrac{1}{E[X]} &= 1
+        \end{align*}
+        So $E\!\left[\dfrac{1}{X}\right] = \dfrac{1}{E[X]}$
+    \end{solution}
 
     \vspace{5em}
 
     \item Suppose that $X$ is uniformly distributed on the interval $(1,2)$. Show that $E(1/X) \neq 1/E(X)$.
+    \begin{solution}
+
+        Given that $X$ is uniformly distributed over $(1, 2)$
+        \[
+            f_X(x) =
+            \begin{cases}
+                1, & 1 < x < 2 \\
+                0, & \text{elsewhere}
+            \end{cases}
+        \]
+        The cdf for $x \in (1, 2)$
+        \begin{align*}
+            F_X(x) &= \int_{1}^{x} dx \\
+            &= \left[x\right]_{1}^{x} \\
+            &= x - 1
+        \end{align*}
+        \[
+            F_X(x) =
+            \begin{cases}
+                0, & x \leq 1 \\
+                x - 1, & 1 < x < 2 \\
+                1, & x \geq 2
+            \end{cases}
+        \]
+
+        Now that we have $F_X(x)$, we can show what was originally asked.
+        \begin{align*}
+            E\left[\dfrac{1}{x}\right] &= \int_{1}^{2} \dfrac{1}{x} dx \\
+            &= \left[\ln{x}\right]_{1}^{2} \\
+            &= \ln{2}
+        \end{align*}
+        For the other one
+        \begin{align*}
+            E[x] &= \int_{1}^{2} x dx \\
+            &= \left[\dfrac{x^2}{2}\right]_{1}^{2} \\
+            &= 2 - \dfrac{1}{2} \\
+            &= \dfrac{3}{2} \\
+            \dfrac{1}{E[X]} &= \dfrac{2}{3} \\
+            \dfrac{2}{3} &\neq \ln{2}
+        \end{align*}
+        \qed
+    \end{solution}
 
     \vspace{5em}
 
@@ -243,10 +437,30 @@ Let $X$ be a Laplacian-distributed random variable; that is,
 
 \begin{enumerate}[label=(\alph*)]
     \item Determine the characteristic function $M_X(jv) = E[e^{jvX}]$ of $X$.
+    \begin{solution}
+        \begin{align*}
+            E[e^{jvX}] &= \int_{-\infty}^{\infty} \exp(jvx) \cdot \frac{\alpha}{2} \exp(-\alpha |x|) dx \\
+            &\text{Splitting the integral} \\
+            &= \int_{-\infty}^{0} \exp(jvx) \cdot \frac{\alpha}{2} \exp(\alpha x) dx + \int_{0}^{\infty} \exp(jvx) \cdot \frac{\alpha}{2} \exp(-\alpha x) dx \\
+            &= \frac{\alpha}{2} \int_{-\infty}^{0} \exp(x(jv + \alpha)) dx + \frac{\alpha}{2} \int_{0}^{\infty} \exp(x(jv - \alpha)) dx \\
+            &= \frac{\alpha}{2} \left[\dfrac{\exp(x(jv + \alpha))}{jv + \alpha}\right]_{-\infty}^{0} + \frac{\alpha}{2} \left[\dfrac{\exp(x(jv - \alpha))}{jv - \alpha}\right]_{0}^{\infty} \\
+            &= \frac{\alpha}{2jv + 2\alpha} + \frac{\alpha}{2} \left( \frac{1}{\alpha - jv} \right) \\
+            &= \frac{\alpha}{2jv + 2\alpha} + \frac{\alpha}{2\alpha - 2jv} \\
+            &= \frac{\alpha\cdot(2\alpha - 2jv)}{(2jv + 2\alpha)\cdot(2\alpha - 2jv)} + \frac{\alpha\cdot(2jv + 2\alpha)}{(2\alpha - 2jv)\cdot(2jv + 2\alpha)} \\
+            &= \frac{\alpha\cdot(2\alpha - 2jv) + \alpha\cdot(2jv + 2\alpha)}{(2jv + 2\alpha)\cdot(2\alpha - 2jv)} \\
+            &= \frac{2\alpha^2 - 2jv\alpha + 2jv\alpha + 2\alpha^2}{(2jv + 2\alpha)\cdot(2\alpha - 2jv)} \\
+            &= \frac{4\alpha^2}{(2jv + 2\alpha)\cdot(2\alpha - 2jv)} \\
+            &= \frac{4\alpha^2}{4jv\alpha - 4j^2 v^2 + 4\alpha^2 - 4jv\alpha} \\
+            &= \frac{\alpha^2}{v^2 + \alpha^2}
+        \end{align*}
+    \end{solution}
 
     \vspace{5em}
 
     \item Determine the mean and variance of $X$ by applying the moment property of the characteristic function.
+    \begin{solution}
+
+    \end{solution}
 
     \vspace{5em}
 
