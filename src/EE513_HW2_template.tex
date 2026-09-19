@@ -5,6 +5,8 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
+\usepackage{amsopn}
+\usepackage{amstext}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -152,7 +154,7 @@ The cumulative distribution function $P_X(x) = P(X \leq x)$ for a random variabl
         P\left(\tfrac{1}{4} \leq X < 1\right) &= P(X < 1) - P(X < \tfrac{1}{4}) = 0.5 - 0.3125 = 0.1875 \\[1.5em]
         P\left(\tfrac{1}{4} \leq X \leq 1\right) &= P(X \leq 1) - P(X < \tfrac{1}{4}) = 1 - 0.3125 = 0.6875 \\[1.5em]
         P\left(X > \tfrac{1}{2}\right) &= 1 - P(X \leq \tfrac{1}{2}) = 1 - 0.375 = 0.625 \\[1.5em]
-        P(X \geq 5) &= 1\\[1.5em]
+        P(X \geq 5) &= 0\\[1.5em]
         P(X < 5) &= 1
     \end{align*}
 
@@ -439,7 +441,7 @@ Let $X$ be a Laplacian-distributed random variable; that is,
     \item Determine the characteristic function $M_X(jv) = E[e^{jvX}]$ of $X$.
     \begin{solution}
         \begin{align*}
-            E[e^{jvX}] &= \int_{-\infty}^{\infty} \exp(jvx) \cdot \frac{\alpha}{2} \exp(-\alpha |x|) dx \\
+            M_X(jv) = E[e^{jvX}] &= \int_{-\infty}^{\infty} \exp(jvx) \cdot \frac{\alpha}{2} \exp(-\alpha |x|) dx \\
             &\text{Splitting the integral} \\
             &= \int_{-\infty}^{0} \exp(jvx) \cdot \frac{\alpha}{2} \exp(\alpha x) dx + \int_{0}^{\infty} \exp(jvx) \cdot \frac{\alpha}{2} \exp(-\alpha x) dx \\
             &= \frac{\alpha}{2} \int_{-\infty}^{0} \exp(x(jv + \alpha)) dx + \frac{\alpha}{2} \int_{0}^{\infty} \exp(x(jv - \alpha)) dx \\
@@ -460,6 +462,39 @@ Let $X$ be a Laplacian-distributed random variable; that is,
     \item Determine the mean and variance of $X$ by applying the moment property of the characteristic function.
     \begin{solution}
 
+        To calculate the mean, we need to find the first derivative of the moment function.
+        \begin{align*}
+            M'_X(jv) &= \dfrac{d}{dv} M_X(jv) \\
+            &= \dfrac{d}{dv} (\alpha^2)(v^2 + \alpha^2)^{-1} \\
+            &= -2\alpha^2 v(v^2 + \alpha^2)^{-2}
+        \end{align*}
+
+        At $v = 0$,
+        \begin{align*}
+            M'_X(0) &= 0
+        \end{align*}
+
+        To find $E[X^2]$, we take the derivative of this again.
+        \begin{align*}
+            M''_X(jv) &= \dfrac{d}{dv} M'_X(jv) \\
+            &= -\alpha^2 \dfrac{d}{dv} (v^2 + \alpha^2)^{-2}\cdot(2v) \\
+            &= -\alpha^2\cdot(-2\cdot(v^2 + \alpha^2)^{-3}\cdot 4v^2 + (v^2 + \alpha^2)^{-2} \cdot 2) \\
+            &= 8\alpha^2 v^2(v^2 + \alpha^2)^{-3} - 2\alpha^2(v^2 + \alpha^2)^{-2}
+        \end{align*}
+
+        At $v = 0$,
+        \begin{align*}
+            M''_X(0) &= 8\alpha^2 (0)((0) + \alpha^2)^{-3} - 2\alpha^2((0) + \alpha^2)^{-2} \\
+            &= - 2\alpha^2(\alpha^2)^{-2} \\
+            &= - \dfrac{2}{\alpha^2}
+        \end{align*}
+
+        \begin{align*}
+            E[X] &= \dfrac{1}{j} M'_X(jv) |_{v = 0} = 0 \\
+            E[X^2] &= \dfrac{1}{j^2} M''_X(jv) |_{v = 0} = \dfrac{2}{\alpha^2} \\
+            Var(X) &= E[X^2] - (E[X])^2 = \dfrac{2}{\alpha^2}
+        \end{align*}
+
     \end{solution}
 
     \vspace{5em}
@@ -474,6 +509,34 @@ $(-\infty, -a]$, $(-a, 0]$, $(0, a]$, and $(a, +\infty)$.
 
 \begin{enumerate}[label=(\alph*)]
     \item Find the value of $a$ so that $X$ is equally likely to fall in each of the four intervals.
+    \begin{solution}
+
+        We were given the formula for a Laplace distribution in the above question.
+        \[
+            f_X(x) = \frac{\alpha}{2} \exp(-\alpha |x|), \qquad -\infty < x < +\infty.
+        \]
+        Given that $\alpha = 1$, we simplify this to
+        \[
+            f_X(x) = \frac{1}{2} \exp(-|x|), \qquad -\infty < x < +\infty.
+        \]
+        We effectively want to find $a$ such that
+        \[
+            \int_{-\infty}^{-a} f_X(x) dx = \int_{-a}^{0} f_X(x) dx = \int_{0}^{a} f_X(x) dx = \int_{a}^{\infty} f_X(x) dx
+        \]
+        Given that this is over the entire line and $\int_{-\infty}^{\infty} f_X(x) = 1$ by definition.
+        The above four integrals are over the entire space, so if they are to be equal, they must all be equal to $\dfrac{1}{4}$.
+        Because of this, we can find a single integral where $a$ makes it equal to $\dfrac{1}{4}$.
+        \begin{align*}
+            \dfrac{1}{4} &= \int_{a}^{\infty} f_X(x) dx \\
+            &= \int_{a}^{\infty} \frac{1}{2} \exp(-x) dx \qquad \text{$|x| = x, a > 0$} \\
+            &= \left[-\frac{1}{2} \exp(-x)\right]_{a}^{\infty} \\
+            &= \frac{1}{2} \exp(-a) \\
+            \vspace{4em} \\
+            \exp(-a) &= \dfrac{1}{2} \\
+            -a &= \ln{\dfrac{1}{2}} \\
+            a &= \ln{2}
+        \end{align*}
+    \end{solution}
 
     \vspace{4em}
 
@@ -483,11 +546,120 @@ $(-\infty, -a]$, $(-a, 0]$, $(0, a]$, and $(a, +\infty)$.
     \]
     \textit{Hint: Differentiate with respect to $x_1$.} Find representation points for the other intervals.
 
+    \begin{solution}
+
+        \begin{align*}
+            \int_0^a \dfrac{\delta}{\delta x_1}(x - x_1)^2 f_X(x)\, dx &= \int_0^a (-2x + 2x_1) f_X(x)\, dx \\
+            &= \int_0^a (-2x + 2x_1) \cdot (\frac{1}{2} \exp(-|x|))\, dx \\
+            &= \int_0^a -x \exp(-x) + x_1 \exp(-x)\, dx \qquad \text{$|x| = x, a > 0$} \\
+            &= \left[ x \exp(-x) + \exp(-x) \right]_{0}^{a} + \left[ - x_1 \exp(-x) \right]_{0}^{a} \\
+            &= a \exp(-a) + \exp(-a) - 1 - x_1 \exp(-a) + x_1
+        \end{align*}
+
+        Setting this equal to $0$ in order to find representation points and plugging in $a = \ln{2}$
+        \begin{align*}
+            0 &= \ln{2} \exp(-\ln{2}) + \exp(-\ln{2}) - 1 - x_1 \exp(-\ln{2}) + x_1 \\
+            &= \dfrac{\ln{2}}{2} + \dfrac{1}{2} - 1 - \dfrac{x_1}{2} + x_1 \\
+            &= \dfrac{\ln{2}}{2} - \dfrac{1}{2} + \dfrac{x_1}{2} \\
+            \dfrac{1}{2} - \dfrac{\ln{2}}{2} &= \dfrac{x_1}{2} \\
+            x_1 &= 1 - \ln{2}
+        \end{align*}
+
+        Next, find it in the interval $(a, \infty)$
+        \begin{align*}
+            &\cdots \\
+            &\left[ x \exp(-x) + \exp(-x) \right]_{a}^{\infty} + \left[ - x_1 \exp(-x) \right]_{a}^{\infty} \\
+            &= - a\exp(-a) - \exp(-a) + x_1 \exp(-a)
+        \end{align*}
+
+        Now substituting in $a = \ln{2}$ when equal to $0$.
+        \begin{align*}
+            0 &= - a\exp(-a) - \exp(-a) + x_1 \exp(-a) \\
+            x_1 \exp(-a) &= a\exp(-a) + \exp(-a) \\
+            \dfrac{x_1}{2} &= \dfrac{\ln{2}}{2} + \dfrac{1}{2} \\
+            x_1 &= \ln{2} + 1
+        \end{align*}
+
+        And given the symmetry of this equation around $x = 0$. \\
+        For $(-\infty, -a]$, $x_1 = - \ln{2} - 1$ \\
+        For $(-a, 0]$, $x_1 = \ln{2} - 1$ \\
+        For $[0, a)$, $x_1 = 1 - \ln{2}$ \\
+        For $[a, \infty)$, $x_1 = \ln{2} + 1$
+
+    \end{solution}
     \vspace{5em}
 
     \item Evaluate the mean-square error of the quantizer: $E[(X - q(X))^2]$.
+    \begin{solution}
 
-    \vspace{5em}
+        Setting up the equations, because of the even symmetry, again given that $a = \ln{2}$
+        \begin{align*}
+            E[(X - q(X))^2] &= 2\left(\int_0^a (x - 1 + \ln{2})^2 f_X(x)\, dx + \int_a^\infty (x - \ln{2} - 1)^2 f_X(x)\, dx\right)
+        \end{align*}
+
+        Working out the first integral, plugging back in $x_1 = 1 - \ln{2}$ for simplicity.
+        \begin{align*}
+            \int_0^a (x - x_1)^2 f_X(x)\, dx &= \dfrac{1}{2} \int_0^a (x - x_1)^2 \exp(-x)\, dx \\
+            &= \dfrac{1}{2} \left( \int_0^a x^2 \exp(-x)\, dx - 2x_1 \int_0^a x \exp(-x)\, dx + x_1^2 \int_0^a \exp(-x)\, dx \right)
+        \end{align*}
+
+        Solving each of these separately, using $\exp(-\ln{2}) = \dfrac{1}{2}$
+        \begin{align*}
+            \int_0^a x^2 \exp(-x)\, dx &= \left[ -x^2 \exp(-x) - 2x \exp(-x) - 2\exp(-x) \right]_{0}^{a} \\
+            &= -\dfrac{(\ln{2})^2}{2} - \ln{2} - 1 + 2 \\
+            &= 1 - \ln{2} - \dfrac{(\ln{2})^2}{2} \\[1em]
+            \int_0^a x \exp(-x)\, dx &= \left[ -x \exp(-x) - \exp(-x) \right]_{0}^{a} \\
+            &= -\dfrac{\ln{2}}{2} - \dfrac{1}{2} + 1 \\
+            &= \dfrac{1 - \ln{2}}{2} = \dfrac{x_1}{2} \\[1em]
+            \int_0^a \exp(-x)\, dx &= \left[ -\exp(-x) \right]_{0}^{a} \\
+            &= -\dfrac{1}{2} + 1 = \dfrac{1}{2}
+        \end{align*}
+
+        Plugging these back in
+        \begin{align*}
+            \int_0^a (x - x_1)^2 f_X(x)\, dx &= \dfrac{1}{2} \left( 1 - \ln{2} - \dfrac{(\ln{2})^2}{2} - 2x_1 \cdot \dfrac{x_1}{2} + \dfrac{x_1^2}{2} \right) \\
+            &= \dfrac{1}{2} \left( 1 - \ln{2} - \dfrac{(\ln{2})^2}{2} - \dfrac{x_1^2}{2} \right) \\
+            &= \dfrac{1}{2} \left( 1 - \ln{2} - \dfrac{(\ln{2})^2}{2} - \dfrac{1 - 2\ln{2} + (\ln{2})^2}{2} \right) \\
+            &= \dfrac{1}{2} \left( \dfrac{1}{2} - (\ln{2})^2 \right) \\
+            &= \dfrac{1}{4} - \dfrac{(\ln{2})^2}{2}
+        \end{align*}
+
+        Working out the second integral, plugging back in $x_2 = \ln{2} + 1$ for simplicity.
+        \begin{align*}
+            \int_a^\infty (x - x_2)^2 f_X(x)\, dx &= \dfrac{1}{2} \int_a^\infty (x - x_2)^2 \exp(-x)\, dx \\
+            &= \dfrac{1}{2} \left( \int_a^\infty x^2 \exp(-x)\, dx - 2x_2 \int_a^\infty x \exp(-x)\, dx + x_2^2 \int_a^\infty \exp(-x)\, dx \right)
+        \end{align*}
+
+        Solving each of these separately, again using $\exp(-\ln{2}) = \dfrac{1}{2}$
+        \begin{align*}
+            \int_a^\infty x^2 \exp(-x)\, dx &= \left[ -x^2 \exp(-x) - 2x \exp(-x) - 2\exp(-x) \right]_{a}^{\infty} \\
+            &= 0 + \dfrac{(\ln{2})^2}{2} + \ln{2} + 1 \\
+            &= 1 + \ln{2} + \dfrac{(\ln{2})^2}{2} \\[1em]
+            \int_a^\infty x \exp(-x)\, dx &= \left[ -x \exp(-x) - \exp(-x) \right]_{a}^{\infty} \\
+            &= 0 + \dfrac{\ln{2}}{2} + \dfrac{1}{2} \\
+            &= \dfrac{\ln{2} + 1}{2} = \dfrac{x_2}{2} \\[1em]
+            \int_a^\infty \exp(-x)\, dx &= \left[ -\exp(-x) \right]_{a}^{\infty} \\
+            &= 0 + \dfrac{1}{2} = \dfrac{1}{2}
+        \end{align*}
+
+        Plugging these back in
+        \begin{align*}
+            \int_a^\infty (x - x_2)^2 f_X(x)\, dx &= \dfrac{1}{2} \left( 1 + \ln{2} + \dfrac{(\ln{2})^2}{2} - 2x_2 \cdot \dfrac{x_2}{2} + \dfrac{x_2^2}{2} \right) \\
+            &= \dfrac{1}{2} \left( 1 + \ln{2} + \dfrac{(\ln{2})^2}{2} - \dfrac{x_2^2}{2} \right) \\
+            &= \dfrac{1}{2} \left( 1 + \ln{2} + \dfrac{(\ln{2})^2}{2} - \dfrac{1 + 2\ln{2} + (\ln{2})^2}{2} \right) \\
+            &= \dfrac{1}{2} \left( \dfrac{1}{2} \right) \\
+            &= \dfrac{1}{4}
+        \end{align*}
+
+        Putting both integrals back into the original equation
+        \begin{align*}
+            E[(X - q(X))^2] &= 2\left( \dfrac{1}{4} - \dfrac{(\ln{2})^2}{2} + \dfrac{1}{4} \right) \\
+            &= 2\left( \dfrac{1}{2} - \dfrac{(\ln{2})^2}{2} \right) \\
+            &= 1 - (\ln{2})^2 \\
+            &\approx 0.5195
+        \end{align*}
+        \qed
+    \end{solution}
 
 \end{enumerate}
 
